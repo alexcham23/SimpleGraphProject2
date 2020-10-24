@@ -1,4 +1,4 @@
-from Archivo import lectura
+#from Archivo import lectura
 #from graphlist import graphfull
 #from graphlist import generalizar
 
@@ -48,54 +48,12 @@ def winprin():
             elif e.get() =="2":
                 ventana2.destroy()
                 ventana.destroy()
-                if banderaleer==False:
-                        root=tk.Tk()
-                        root.withdraw()
-                        ms.showerror(title="Error",message="Aun no has analizado algun archivo")
-                        root.destroy()
-                        winprin()
-                else:   
-                    if contador > 0:
-                        root=tk.Tk()
-                        root.withdraw()
-                        ms.showerror(title="Error",message="Lo sentimos no podemos generar el mapa el archivo leido contiente errores")
-                        root.destroy()
-                        winprin()
-                    else:
-                        root=tk.Tk()
-                        root.withdraw()
-                        respuestas=ms.askyesno('Continuar','¿Usted desea Continuar?')
-                        root.destroy()
-                        if respuestas==True:
-                            generalizar()
-                            winprin()
-                        else:    
-                            winprin()
+ 
                             
             elif e.get()== "3":
                 ventana2.destroy()
                 ventana.destroy()
-                if banderaleer==False:
-                        root=tk.Tk()
-                        root.withdraw()
-                        ms.showerror(title="Error",message="Aun no has analizado algun archivo")
-                        root.destroy()
-                        winprin()
-                else:                 
-                    if contador > 0:
-                        root=tk.Tk()
-                        root.withdraw()
-                        ms.showerror(title="Error",message="Lo sentimos no podemos generar el mapa el archivo leido contiente errores")
-                        root.destroy()
-                        winprin()
-                    else:
-                        graphfull()
-                        winprin()
-            elif e.get() =="4":
-                ventana2.destroy()
-                ventana.destroy()
-                sys.exit()
-                
+                sys.exit()              
             else:
                 ventana2.destroy()
                 ms.showerror(title="Error", message="Error Intentelo de Nuevo")
@@ -110,11 +68,11 @@ def winprin():
 
     #creando utilidades en la ventana principal
     label = tk.Label(
-    panel1, text="Lenguajes Formales de Programacion\nseccion \"A-\"\nJaime Alejandro Armira Us\n 201602983", relief="solid")
+    panel1, text="Proyecto #2 \nLenguajes Formales de Programacion\nseccion \"A-\"\nJaime Alejandro Armira Us\n 201602983", relief="solid")
     label.config(font=(12))
     label.pack(side="top", fill="x", pady=10)
     label2 = tk.Label(
-    panel1, text="1. Cargar Archivo\n2. Graficar Ruta\n3. Graficar Mapa\n4. Salir\n\n\n>> Ingrese una Opcion:")
+    panel1, text="1. Cargar Archivo\n2. Generar Grafica\n3. Salir\n\n\n>> Ingrese una Opcion:")
     label2.place(x=0, y=50, width=100, height=50)
     label2.config(justify="left", font=(12))
     label2.pack(side="left")
