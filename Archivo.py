@@ -7,11 +7,11 @@ def lectura():
     ls= tk.Tk()
     ls.title("Archivo")
     ls.withdraw()
-    ls.filename= filedialog.askopenfilename(initialdir="c:/Desktop",title="Seleccionar Archivo",filetypes=(("txt files","*.txt"),("all files","*.*")))
+    ls.filename= filedialog.askopenfilename(initialdir="c:/Desktop",title="Seleccionar Archivo",filetypes=(("lfp files","*.lfp"),("all files","*.*")))
     ls.destroy()
     ls.mainloop()
    
-    file=open(ls.filename,"r",encoding='utf-8')
+    file=open(ls.filename,"r",encoding='utf-8')#codig utf-8 archivo
     info=""
     for obten in file.readlines():
         info += obten
