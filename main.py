@@ -1,6 +1,6 @@
 from Archivo import lectura
-from graphlist import graphfull
-from graphlist import generalizar
+#from graphlist import graphfull
+#from graphlist import generalizar
 
 contador=0
 banderaleer=False
