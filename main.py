@@ -42,8 +42,6 @@ def winprin():
             if e.get() =="1":
                 ventana2.destroy() #cerrando la ventana secundaria tipo dispose
                 ventana.destroy() #cerrando la ventana principal tipo dispose
-                contador=lectura()#llamamos al metodo lectura de archivo
-                banderaleer=True
                 winprin()
             elif e.get() =="2":
                 ventana2.destroy()
