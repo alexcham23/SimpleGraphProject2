@@ -15,7 +15,8 @@ def lectura():
     info=""
     for obten in file.readlines():
         info += obten
-
+    if 'lista' in info:
+        analizadolista(info)
     #contador=analizador(info)
     #return contador
     info=""
