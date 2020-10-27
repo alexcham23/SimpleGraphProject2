@@ -1,4 +1,4 @@
-#from Archivo import lectura
+from Archivo import lectura
 #from graphlist import graphfull
 #from graphlist import generalizar
 
@@ -42,6 +42,7 @@ def winprin():
             if e.get() =="1":
                 ventana2.destroy() #cerrando la ventana secundaria tipo dispose
                 ventana.destroy() #cerrando la ventana principal tipo dispose
+                lectura()
                 winprin()
             elif e.get() =="2":
                 ventana2.destroy()

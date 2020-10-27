@@ -1,5 +1,5 @@
 tipo=""
-def token(dato):
+def tokens(dato):
     global tipo
     if dato.lower()=="lista":
         tipo="Tk_lista"
@@ -17,7 +17,7 @@ def token(dato):
         tipo="Tk_Cierre_Llave" 
     elif ";" in dato:
         tipo="Tk_Punto&coma"
-    elif tipo.lower()=="circulo" or tipo.lower()=="rectangulo" or tipo.lower()=="triangulo" or tipo.lower()=="punto" or tipo.lower()=="hexagono" or tipo.lower()=="diamante":
+    elif "circulo" in dato.lower() or "rectangulo" in dato.lower() or "triangulo" in dato.lower() or "punto" in dato.lower() or "hexagono" in dato.lower() or "diamante" in dato.lower():
         tipo="Tk_Forma"
     elif "'" in dato:
         tipo="Tk_Cadena"
@@ -27,4 +27,8 @@ def token(dato):
         tipo="Tk_nodos"
     elif dato.lower()=="defecto":
         tipo="Tk_defecto"
+    elif dato.lower()=="verdadero":
+        tipo="Tk_listaDobleEnlazada"
+    elif dato.lower()=="falso":
+        tipo="Tk_listaSimple"
     return tipo   

@@ -1,5 +1,9 @@
 from tkinter import messagebox as ms
 import tkinter as tk
+from Token import tokens
+from lista import listavalue
+from lista import listaerror
+
 fila=0
 i=0
 cadena=""
@@ -110,7 +114,13 @@ def S0(concatenada):
          auxiliar+=concatenada
          i+=1
          estado=1
-         columna+=1
+         columna+=1 
+    elif "}" in concatenada and banderallave== True:
+        banderallave=False
+        listavalue(fila,columna,concatenada,tokens(concatenada))
+        i+=1
+        columna+=1  
+        estado=0    
     elif banderalista== True:
         estado=2
     elif banderanodo==True:
@@ -118,12 +128,7 @@ def S0(concatenada):
     elif banderanodos==True:
         estado=4
     elif banderadefecto==True:
-        estado=16    
-    elif "}" in concatenada and banderallave== True:
-        banderallave=False
-        #guardar listatoken el 
-        i+=1
-        columna+=1      
+        estado=16   
 def S1(concatenada):
     global i,fila,columna,errorcount,estado,auxiliar,banderalista,banderanodo,banderanodos,banderadefecto
     if concatenada.islower() or concatenada.isupper():
@@ -137,25 +142,25 @@ def S1(concatenada):
         columna+=1
         if auxiliar.lower()== "lista":
             banderalista=True
-            #aqui graabamos la listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))
             auxiliar=""
         elif auxiliar.lower()=="nodo":
             banderanodo= True
-            #aqui graabamos la listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
             auxiliar=""
         elif auxiliar.lower()=="nodos":
             banderanodos=True
-            #aqui graabamos la listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))#aqui graabamos la listatoken
             auxiliar=""
         elif auxiliar.lower()=="defecto":
             banderadefecto=True
-            #aqui graabamos la listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
             auxiliar=""
         else:
             errorcount+=1
-            #aqui graabamos la listatokenerror
+            listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
             auxiliar=""
-        #aqui graabamos la listatoken el signo
+        listavalue(fila,columna,concatenada,tokens(concatenada))
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -171,9 +176,11 @@ def S1(concatenada):
         estado=1 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror     
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
+        columna+=1
+        estado+=1
 def S2(concatenada):
-    global i, fila,columna, errorcount,auxiliar,banderallave
+    global i, fila,columna, errorcount,auxiliar,banderallave,estado
     if "'" in concatenada:
         auxiliar+=concatenada
         i+=1
@@ -189,7 +196,7 @@ def S2(concatenada):
         banderallave=True
         i+=1
         columna+=1
-        estado=7
+        estado=0
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -205,9 +212,11 @@ def S2(concatenada):
         estado=2 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror
+        listaerror(fila,columna,concatenada,"desconocido")#aqui graabamos la listatokenerror
+        columna+=1
+        estado=2
 def S3(concatenada):
-    global i, fila,columna, errorcount,auxiliar
+    global i, fila,columna, errorcount,auxiliar,estado
     if "'" in concatenada:
         auxiliar+=concatenada
         i+=1
@@ -233,10 +242,11 @@ def S3(concatenada):
         estado=2 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
         estado=3
+        columna+=1
 def S4(concatenada):
-    global i, fila,columna, errorcount,auxiliar
+    global i, fila,columna, errorcount,auxiliar,estado
     if concatenada.isdigit():
         auxiliar+=concatenada
         i+=1
@@ -267,12 +277,12 @@ def S4(concatenada):
         estado=4
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=4                     
 def S5(concatenada):
-    global fila,columna,i,errorcount,auxiliar
+    global fila,columna,i,errorcount,auxiliar,estado
     if "\n" in concatenada:
         i+=1
         fila+=1
@@ -289,10 +299,10 @@ def S5(concatenada):
         columna+=1
         estado=5;
 def S6(concatenada):
-    global fila,columna,i,errorcount,auxiliar
+    global fila,columna,i,errorcount,auxiliar,estado
     if "," in concatenada:
-        #aqui guardamos auxi en listatoken
-        #aqui guardamos signo en listatoken
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#aqui guardamos auxi en listatoken
+        listavalue(fila,columna,concatenada,tokens(concatenada))#aqui guardamos signo en listatoken
         auxiliar=""
         i+=1
         columna+=1
@@ -312,32 +322,39 @@ def S6(concatenada):
         estado=6 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror    
+        estado=6
+        columna+=1
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror    
 def S7(concatenada):
-    global i,columna,fila,auxiliar,errorcount
+    global i,columna,fila,auxiliar,errorcount,estado
     if concatenada.islower() or concatenada.isupper():
+        auxiliar+=concatenada
         i+=1
         columna+=1
         estado=7
     elif ")"in concatenada: #verdadero o falso
-        i+=1
+        
         columna+=1
         if auxiliar.lower()=="verdadero":
-            #guardamos en listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
             auxiliar=""
             estado=2
         elif auxiliar.lower() =="falso":
-            #guardamos en listatoken
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
             auxiliar=""
             estado=2
         else:
             errorcount+=1
-            #aqui graabamos la listatokenerror
+            listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
             auxiliar=""
             estado=2
-        #guardamos en listatoken el signo
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken el signo
+        i+=1
     elif "," in concatenada:
         estado=2
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
+        auxiliar=""
+        listavalue(fila,columna,concatenada,tokens(concatenada))
         i+=1
         columna+=1
     elif "\n" in concatenada:
@@ -355,12 +372,12 @@ def S7(concatenada):
         estado=7 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
         i+=1
         columna+=1
         estado=7 
 def S8(concatenada): 
-    global fila,columna,i,errorcount,auxiliar
+    global fila,columna,i,errorcount,auxiliar,estado
     if "\n" in concatenada:
         i+=1
         fila+=1
@@ -377,11 +394,11 @@ def S8(concatenada):
         columna+=1
         estado=8;
 def S9(concatenada):
-    global i,columna,fila,auxiliar,errorcount
+    global i,columna,fila,auxiliar,errorcount,estado
     if ")"in concatenada:
         i+=1
         columna+=1
-        #guardamos en listatoken
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
         auxiliar=""
         estado=3
     elif "\n" in concatenada:
@@ -399,12 +416,12 @@ def S9(concatenada):
         estado=9
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1 
         estado=9   
 def S10(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -430,20 +447,20 @@ def S10(concatenada):
         estado=10 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=10        
 def S11(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if concatenada.isdigit():
         auxiliar+=concatenada
         i+=1
         columna+=1
         estado=11
     elif "," in concatenada:
-        #guardamos en listatoken auxiliar
-        #guardamos en listatoken signo
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         auxiliar=""
         columna+=1
         i+=1
@@ -463,12 +480,12 @@ def S11(concatenada):
         estado=11 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui grabamos la listatokenerror 
         i+=1
         columna+=1
         estado=11                        
 def S12(concatenada): 
-    global fila,columna,i,errorcount,auxiliar
+    global fila,columna,i,errorcount,auxiliar,estado
     if "\n" in concatenada:
         i+=1
         fila+=1
@@ -485,7 +502,7 @@ def S12(concatenada):
         columna+=1
         estado=12  
 def S13(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -511,18 +528,18 @@ def S13(concatenada):
         estado=15 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=15    
 def S14(concatenada):
-    global i,columna,fila,auxiliar,errorcount
+    global i,columna,fila,auxiliar,errorcount,estado
     if ")"in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos la listatoken el simbolo
+        auxiliar=""
         i+=1
         columna+=1
-        #guardamos en listatoken auxiliar
-        #guardamos la listatoken el simbolo
-        auxiliar=""
         estado=4
     elif "\n" in concatenada:
         i+=1
@@ -539,12 +556,12 @@ def S14(concatenada):
         estado=14
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1 
         estado=14   
 def S15(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -570,12 +587,12 @@ def S15(concatenada):
         estado=15 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=15        
 def S16(concatenada):
-    global i, fila,columna, errorcount,auxiliar
+    global i, fila,columna, errorcount,auxiliar,estado
     if "'" in concatenada:
         auxiliar+=concatenada
         i+=1
@@ -601,12 +618,12 @@ def S16(concatenada):
         estado=16
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=16                     
 def S17(concatenada):
-    global fila,columna,i,errorcount,auxiliar
+    global fila,columna,i,errorcount,auxiliar,estado
     if "\n" in concatenada:
         i+=1
         fila+=1
@@ -623,13 +640,14 @@ def S17(concatenada):
         columna+=1
         estado=17      
 def S18(concatenada):
-    global i,columna,fila,auxiliar,errorcount
+    global i,columna,fila,auxiliar,errorcount,estado
     if ")"in concatenada:
+
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos la listatoken el simbolo
+        auxiliar=""
         i+=1
         columna+=1
-        #guardamos en listatoken auxiliar
-        #guardamos la listatoken el simbolo
-        auxiliar=""
         estado=16
     elif "\n" in concatenada:
         i+=1
@@ -646,15 +664,15 @@ def S18(concatenada):
         estado=18
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1 
         estado=18       
 def S19(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if ";"  in concatenada:
-        #guardamos en listatoken auxiliar
-        #guardamos en listatoken signo
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         auxiliar=""
         columna+=1
         i+=1
@@ -675,15 +693,15 @@ def S19(concatenada):
         estado=19 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=19        
 def S20(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if ";"  in concatenada:
-        #guardamos en listatoken auxiliar
-        #guardamos en listatoken signo
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         auxiliar=""
         columna+=1
         i+=1
@@ -704,15 +722,15 @@ def S20(concatenada):
         estado=20 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=20            
 def S21(concatenada):
-    global i,fila,columna,errorcount,auxiliar
+    global i,fila,columna,errorcount,auxiliar,estado
     if ";"  in concatenada:
-        #guardamos en listatoken auxiliar
-        #guardamos en listatoken signo
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
         auxiliar=""
         columna+=1
         i+=1
@@ -733,7 +751,7 @@ def S21(concatenada):
         estado=21 
     else:
         errorcount+=1
-        #aqui graabamos la listatokenerror 
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
         i+=1
         columna+=1
         estado=21   
