@@ -31,4 +31,24 @@ def tokens(dato):
         tipo="Tk_listaDobleEnlazada"
     elif dato.lower()=="falso":
         tipo="Tk_listaSimple"
+    elif dato.lower()=="azul" or dato.lower()=="azul2" or dato.lower()=="azul3":
+        tipo="Tk_color"
+    elif dato.lower()=="rojo" or dato.lower()=="rojo2" or dato.lower()=="rojo3": 
+        tipo="Tk_color"
+    elif dato.lower()=="amarillo" or dato.lower()=="amarillo2" or dato.lower()=="amarillo3":
+        tipo="Tk_color"
+    elif dato.lower()=="anaranjado" or dato.lower()=="anaranjado2" or dato.lower()=="anaranjado3":
+        tipo="Tk_color"
+    elif dato.lower()=="cafe" or dato.lower()=="cafe2" or dato.lower()=="cafe3":
+        tipo="Tk_color"
+    elif dato.lower()=="gris" or dato.lower()=="gris2" or dato.lower()=="gris3":
+        tipo="Tk_color"
+    elif dato.lower()=="morado" or dato.lower()=="morado2" or dato.lower()=="morado3":
+        tipo="Tk_color"
+    elif dato.lower()=="gris" or dato.lower()=="gris2" or dato.lower()=="gris3":
+        tipo="Tk_color"
+    elif dato.lower()=="verde" or dato.lower()=="verde2" or dato.lower()=="verde3" or dato.lower()=="blanco":
+        tipo="Tk_color"        
+    else:
+        tipo="Desconocido"  
     return tipo   

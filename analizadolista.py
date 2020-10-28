@@ -3,7 +3,8 @@ import tkinter as tk
 from Token import tokens
 from lista import listavalue
 from lista import listaerror
-
+from lista import nombredefect
+from lista import colordefect
 fila=0
 i=0
 cadena=""
@@ -51,50 +52,52 @@ def analizador(texto):
         #i+=1
 def switch(concatenada):
     global estado
-    if '0' in str(estado):
+    if estado == 0:
         S0(concatenada)
-    elif '1'in  str(estado):
+    elif  estado==1:
         S1(concatenada)
-    elif '2' in str(estado):       
+    elif estado==2:       
         S2(concatenada)
-    elif '3' in str(estado):
+    elif estado==3:
         S3(concatenada)
-    elif '4' in str(estado):
+    elif estado==4:
         S4(concatenada)
-    elif '5' in str(estado):
+    elif estado==5:
         S5(concatenada)
-    elif '6' in str(estado):
+    elif estado==6:
         S6(concatenada)
-    elif '7' in str(estado):
+    elif estado==7:
         S7(concatenada)
-    elif '8' in str(estado):
+    elif estado==8:
         S8(concatenada)
-    elif '9' in str(estado):
+    elif estado==9:
         S9(concatenada)
-    elif '10' in str(estado):
+    elif estado==10:
         S10(concatenada)    
-    elif '11' in str(estado):
+    elif estado==11:
         S11(concatenada)
-    elif '12' in str(estado):
+    elif estado==12:
         S12(concatenada)
-    elif '13' in str(estado):
+    elif estado==13:
         S13(concatenada)
-    elif '14' in str(estado):
+    elif estado==14:
         S14(concatenada)    
-    elif '15' in str(estado):
+    elif estado==15:
         S15(concatenada)
-    elif '16' in str(estado):
+    elif estado==16:
         S16(concatenada)
-    elif '17' in str(estado):
+    elif estado==17:
         S17(concatenada)
-    elif '18' in str(estado):
+    elif estado==18:
         S18(concatenada)
-    elif '19' in str(estado):
+    elif estado==19:
         S19(concatenada)
-    elif '20' in str(estado):
+    elif estado==20:
         S20(concatenada)
-    elif '21' in str(estado):
+    elif estado==21:
         S21(concatenada)
+    elif estado==22:
+        S22(concatenada)
 def S0(concatenada):
     global fila,columna,i,errorcount,estado,auxiliar,banderalista,banderanodo,banderanodos,banderadefecto,banderallave
     if "\n" in concatenada:
@@ -121,6 +124,15 @@ def S0(concatenada):
         i+=1
         columna+=1  
         estado=0    
+    elif cadena[i]=="/" and cadena[i+1]=="/":
+        banderacomentario=False
+        while i and banderacomentario==False:
+            if cadena[i]=="\n":
+                fila+=1
+                estado=0
+                columna=0
+                banderacomentario=True
+            i+=1    
     elif banderalista== True:
         estado=2
     elif banderanodo==True:
@@ -180,7 +192,7 @@ def S1(concatenada):
         columna+=1
         estado+=1
 def S2(concatenada):
-    global i, fila,columna, errorcount,auxiliar,banderallave,estado
+    global i, fila,columna, errorcount,auxiliar,banderallave,estado,banderalista
     if "'" in concatenada:
         auxiliar+=concatenada
         i+=1
@@ -227,6 +239,11 @@ def S3(concatenada):
         i+=1
         columna+=1
         estado=10
+    elif "#" in concatenada:
+        auxiliar+=concatenada
+        i+=1
+        columna+=1
+        estado=22
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -239,7 +256,7 @@ def S3(concatenada):
     elif " " in concatenada:
         i+=1
         columna+=1;
-        estado=2 
+        estado=3 
     else:
         errorcount+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
@@ -401,6 +418,7 @@ def S9(concatenada):
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
         auxiliar=""
         estado=3
+        # falta guardar signo
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -421,7 +439,7 @@ def S9(concatenada):
         columna+=1 
         estado=9   
 def S10(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -431,7 +449,15 @@ def S10(concatenada):
         auxiliar+=concatenada
         i+=1
         estado=20
-        columna+=1       
+        columna+=1     
+    elif ";" in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxiliar=""
+        columna+=1
+        i+=1
+        banderanodo=False
+        estado=0       
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -502,7 +528,7 @@ def S12(concatenada):
         columna+=1
         estado=12  
 def S13(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,colordefect
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -513,6 +539,15 @@ def S13(concatenada):
         i+=1
         estado=21
         columna+=1       
+    elif ";" in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        colordefect=auxiliar
+        auxiliar=""
+        columna+=1
+        i+=1
+        banderanodo=False
+        estado=0   
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -571,7 +606,15 @@ def S15(concatenada):
         auxiliar+=concatenada
         i+=1
         estado=21
-        columna+=1       
+        columna+=1   
+    elif ";" in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxiliar=""
+        columna+=1
+        i+=1
+        banderanodo=False
+        estado=0       
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -640,11 +683,13 @@ def S17(concatenada):
         columna+=1
         estado=17      
 def S18(concatenada):
-    global i,columna,fila,auxiliar,errorcount,estado
+    global i,columna,fila,auxiliar,errorcount,estado,nombredefect
     if ")"in concatenada:
 
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
-        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos la listatoken el simbolo
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos la listatoken el simbolo
+        auxiliar=auxiliar.replace("'","")
+        nombredefect=auxiliar
         auxiliar=""
         i+=1
         columna+=1
@@ -669,10 +714,11 @@ def S18(concatenada):
         columna+=1 
         estado=18       
 def S19(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,banderadefecto,colordefect
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        colordefect=auxiliar;
         auxiliar=""
         columna+=1
         i+=1
@@ -698,7 +744,7 @@ def S19(concatenada):
         columna+=1
         estado=19        
 def S20(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
@@ -727,7 +773,7 @@ def S20(concatenada):
         columna+=1
         estado=20            
 def S21(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodos
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
@@ -755,3 +801,39 @@ def S21(concatenada):
         i+=1
         columna+=1
         estado=21   
+def S22(concatenada):
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
+    if ")" in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
+        auxiliar=""
+        columna+=1
+        i+=1
+        estado=3   
+    elif ";"  in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
+        auxiliar=""
+        columna+=1
+        i+=1
+        banderanodo=False
+        estado=0
+    elif "\n" in concatenada:
+        i+=1
+        fila+=1
+        columna=0
+        estado=22
+    elif "\t" in concatenada:
+        i+=1
+        columna+=8;
+        estado=22
+    elif " " in concatenada:
+        i+=1
+        columna+=1;
+        estado=22 
+    else:
+        errorcount+=1
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
+        i+=1
+        columna+=1
+        estado=22   

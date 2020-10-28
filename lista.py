@@ -1,5 +1,11 @@
 error=[]
 evalue=[]
+listaestados=[]
+nombredefect=""
+colordefect=""
+tipolista=""
+tipofigura=""
+nombre=""
 ruta=""
 def limpiarlistas():
     global evalue, ruta, error
@@ -14,3 +20,6 @@ def listavalue(fila,columna,lexema,token):
     global listavalue
     lista2=[str(fila),str(columna),str(lexema),str(token)] 
     evalue.append(lista2) 
+def estados(encabezado):
+    global listaestados    
+    listaestados.append([encabezado])
