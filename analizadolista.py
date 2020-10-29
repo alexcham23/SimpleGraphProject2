@@ -2,9 +2,12 @@ from tkinter import messagebox as ms
 import tkinter as tk
 from Token import tokens
 from lista import listavalue
-from lista import listaerror
-from lista import nombredefect
-from lista import colordefect
+from lista import listaerror,estados,llamar,graficarlist
+nombredefect=""
+colordefect=""
+tipolista=""
+tipofigura=""
+nombre=""
 fila=0
 i=0
 cadena=""
@@ -12,6 +15,8 @@ errorcount=0
 columna=0
 estado=0
 auxiliar=""
+auxinodo=""
+auxinodocount=0
 banderalista=False
 banderanodo=False
 banderanodos=False
@@ -44,7 +49,9 @@ def analizador(texto):
                 root=tk.Tk()
                 root.withdraw()                
                 ms.showerror(title="error",message="EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores")
-                root.destroy()    
+                root.destroy()  
+                llamar()  
+                graficarlist()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores")
                 return errorcount
         else:    
@@ -279,6 +286,11 @@ def S4(concatenada):
         i+=1
         columna+=1
         estado=15
+    elif "#" in concatenada:
+        auxiliar+=concatenada
+        i+=1
+        columna+=1
+        estado=23
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -316,10 +328,12 @@ def S5(concatenada):
         columna+=1
         estado=5;
 def S6(concatenada):
-    global fila,columna,i,errorcount,auxiliar,estado
+    global fila,columna,i,errorcount,auxiliar,estado,nombre
     if "," in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#aqui guardamos auxi en listatoken
         listavalue(fila,columna,concatenada,tokens(concatenada))#aqui guardamos signo en listatoken
+        auxiliar=auxiliar.replace("'","")
+        nombre=auxiliar
         auxiliar=""
         i+=1
         columna+=1
@@ -343,7 +357,7 @@ def S6(concatenada):
         columna+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror    
 def S7(concatenada):
-    global i,columna,fila,auxiliar,errorcount,estado
+    global i,columna,fila,auxiliar,errorcount,estado,tipofigura,tipolista
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -354,10 +368,12 @@ def S7(concatenada):
         columna+=1
         if auxiliar.lower()=="verdadero":
             listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
+            tipolista=auxiliar
             auxiliar=""
             estado=2
         elif auxiliar.lower() =="falso":
             listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
+            tipolista=auxiliar
             auxiliar=""
             estado=2
         else:
@@ -370,6 +386,8 @@ def S7(concatenada):
     elif "," in concatenada:
         estado=2
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
+        auxiliar=auxiliar.replace("'","")
+        tipofigura=auxiliar
         auxiliar=""
         listavalue(fila,columna,concatenada,tokens(concatenada))
         i+=1
@@ -411,11 +429,14 @@ def S8(concatenada):
         columna+=1
         estado=8;
 def S9(concatenada):
-    global i,columna,fila,auxiliar,errorcount,estado
+    global i,columna,fila,auxiliar,errorcount,estado,auxinodo
     if ")"in concatenada:
         i+=1
         columna+=1
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken
+        listavalue(fila,columna,concatenada,tokens(concatenada))
+        auxiliar=auxiliar.replace("'","")
+        auxinodo=auxiliar
         auxiliar=""
         estado=3
         # falta guardar signo
@@ -439,7 +460,7 @@ def S9(concatenada):
         columna+=1 
         estado=9   
 def S10(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo,auxinodo
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -453,6 +474,8 @@ def S10(concatenada):
     elif ";" in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        estados(auxinodo,auxiliar)
+        auxinodo=""
         auxiliar=""
         columna+=1
         i+=1
@@ -478,7 +501,7 @@ def S10(concatenada):
         columna+=1
         estado=10        
 def S11(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,auxinodocount
     if concatenada.isdigit():
         auxiliar+=concatenada
         i+=1
@@ -487,6 +510,7 @@ def S11(concatenada):
     elif "," in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxinodocount=int(auxiliar)
         auxiliar=""
         columna+=1
         i+=1
@@ -568,10 +592,11 @@ def S13(concatenada):
         columna+=1
         estado=15    
 def S14(concatenada):
-    global i,columna,fila,auxiliar,errorcount,estado
+    global i,columna,fila,auxiliar,errorcount,estado,auxinodo
     if ")"in concatenada:
+        auxinodo=auxiliar
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
-        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos la listatoken el simbolo
+        listavalue(fila,columna,concatenada,tokens(auxiliar))#guardamos la listatoken el simbolo
         auxiliar=""
         i+=1
         columna+=1
@@ -596,7 +621,7 @@ def S14(concatenada):
         columna+=1 
         estado=14   
 def S15(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado
+    global i,fila,columna,errorcount,auxiliar,estado,auxinodo,auxinodocount
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -608,8 +633,15 @@ def S15(concatenada):
         estado=21
         columna+=1   
     elif ";" in concatenada:
+        
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxinodo=auxinodo.replace("'","" )
+        x=0
+        while x<auxinodocount:
+            estados(auxinodo+str(x+1),auxiliar)
+            x+=1
+        auxinodo=""
         auxiliar=""
         columna+=1
         i+=1
@@ -744,10 +776,12 @@ def S19(concatenada):
         columna+=1
         estado=19        
 def S20(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo,auxinodo
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        estados(auxinodo,auxiliar)
+        auxinodo=""
         auxiliar=""
         columna+=1
         i+=1
@@ -773,10 +807,16 @@ def S20(concatenada):
         columna+=1
         estado=20            
 def S21(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderanodos
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodos,auxinodocount,auxinodo
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
-        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxinodo=auxinodo.replace("'","" )
+        x=0
+        while x<auxinodocount:
+            estados(auxinodo+str(x+1),auxiliar)
+            x+=1
+        auxinodo=""
         auxiliar=""
         columna+=1
         i+=1
@@ -802,21 +842,66 @@ def S21(concatenada):
         columna+=1
         estado=21   
 def S22(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderanodo
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo,auxinodo
     if ")" in concatenada:
+        auxinodo=auxiliar
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
-        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         auxiliar=""
         columna+=1
         i+=1
         estado=3   
     elif ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
-        listavalue(fila,columna,auxiliar,tokens(concatenada))#guardamos en listatoken signo
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        estados(auxinodo,auxiliar)
+        auxinodo=""
         auxiliar=""
         columna+=1
         i+=1
         banderanodo=False
+        estado=0
+    elif "\n" in concatenada:
+        i+=1
+        fila+=1
+        columna=0
+        estado=22
+    elif "\t" in concatenada:
+        i+=1
+        columna+=8;
+        estado=22
+    elif " " in concatenada:
+        i+=1
+        columna+=1;
+        estado=22 
+    else:
+        errorcount+=1
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
+        i+=1
+        columna+=1
+        estado=22   
+def S23(concatenada):
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodos,auxinodo,auxinodocount
+    if ")" in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxiliar=""
+        columna+=1
+        i+=1
+        estado=4   
+    elif ";"  in concatenada:
+        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
+        auxinodo=auxinodo.replace("'","" )
+        x=0
+        while x<auxinodocount:
+            estados(auxinodo+str(x+1),auxiliar)
+            x+=1
+        auxinodo=""
+        auxiliar=""
+        columna+=1
+        i+=1
+        banderanodos=False
         estado=0
     elif "\n" in concatenada:
         i+=1

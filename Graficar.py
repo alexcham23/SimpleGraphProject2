@@ -18,15 +18,15 @@ def guardar():
 def Grafico(graphi,name):
     global ruta
     guardar()
-    if  path.exists(''+ruta+'\\'+name+'.svg.png') and path.exists(''+ruta+'\\'+name+'.svg'): 
-        os.remove(''+ruta+'\\'+name+'.svg.png')
-        os.remove(''+ruta+'\\'+name+'.svg')   
+    if  path.exists(''+ruta+'\\'+name+'.gv.svg') and path.exists(''+ruta+'\\'+name+'.gv'): 
+        os.remove(''+ruta+'\\'+name+'.gv.svg')
+        os.remove(''+ruta+'\\'+name+'.gv')   
       #d = Digraph(format='png')
         d=Source(graphi)
         #d.source(grafo)
         #d.format='png'
-        #d.render(''+name+'.dot', ruta,format='png',view=True) 
-        d.render(''+name+'.svg',ruta,format='png',view=False)
+        d.render(''+name+'.gv', ruta,format='png',view=False) 
+        d.render(''+name+'.gv',ruta,format='svg',view=False)
         #render('dot', 'png',name+'.gv') 
     else:
       #d = Digraph(format='png')
@@ -34,5 +34,7 @@ def Grafico(graphi,name):
       #d.source(grafo)
       #d.format='png'
       #d.format='pdf'
-      #d.render(''+name+'.dot',ruta,format='png',view=True)
-      d.render(''+name+'.svg',ruta,format='png',view=False)
+      d.render(''+name+'.gv',ruta,format='png',view=False)
+      d.render(''+name+'.gv',ruta,format='svg',view=False)
+      
+      
