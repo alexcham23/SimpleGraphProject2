@@ -1,6 +1,7 @@
 from tkinter import filedialog
 import tkinter as tk
 from analizadolista import analizador
+from analizadormatriz import analizadorMatriz
 #from numeroaleatorios import aleatorios
 
 def lectura():
@@ -15,8 +16,10 @@ def lectura():
     info=""
     for obten in file.readlines():
         info += obten
-    if 'lista' in info:
+    if 'lista' in info.lower():
         analizador(info)
+    elif 'matriz' in info.lower():
+        analizadorMatriz(info)
     #contador=analizador(info)
     #return contador
     info=""
