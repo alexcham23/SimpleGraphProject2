@@ -2,28 +2,35 @@ from Graficar import Grafico
 error=[]
 evalue=[]
 listaestados=[]
+tipo=0
 name=""
 namedefect=""
 Colordefect=""
 figuradefect=""
 tipolist=""
 ruta=""
-graph1=""
-graph2=""
+#graph1=""
+#graph2=""
 def limpiarlistas():
-    global evalue, ruta, error
+    global evalue, ruta, error, listaestados, Colordefect,name,namedefect,figuradefect,tipolist
     evalue.clear()
     error.clear()
+    listaestados.clear()
     ruta=""
+    Colordefect=""
+    name=""
+    namedefect=""
+    figuradefect=""
+    tipolist=""
 def llamar():
-    global name,namedefect,Colordefect, tipolist,figuradefect
+    global name,namedefect,Colordefect, tipolist,figuradefect,tipo
     from analizadolista import nombre,nombredefect,colordefect,tipofigura,tipolista
     name=nombre
     namedefect=nombredefect
     Colordefect=colordefect
     figuradefect=tipofigura
     tipolist= tipolista
-    
+    tipo=1
     for dato in range(len(listaestados)):
         if listaestados[dato][0]=="#" and listaestados[dato][1]=="#":
             listaestados[dato][0]=namedefect
@@ -33,14 +40,14 @@ def llamar():
         elif listaestados[dato][0]=="#" and listaestados[dato][1]!="#":
             listaestados[dato][0]=namedefect
 def llamar2():
-    global name,namedefect,Colordefect, tipolist,figuradefect
+    global name,namedefect,Colordefect, tipolist,figuradefect,tipo
     from analizadormatriz import nombre,nombredefect,colordefect,tipofigura,tipolista
-    
     name=nombre
     namedefect=nombredefect
     Colordefect=colordefect
     figuradefect=tipofigura
-    tipolist= tipolista    
+    tipolist= tipolista  
+    tipo=2  
 def listaerror(fila,columna,caracter,descripcion):
     global listaerror
     lista=[str(fila),str(columna),str(caracter),str(descripcion)]
@@ -87,7 +94,6 @@ def graficarlist():
             else:
                 graph3+="\n\t"+auxiliar+"->"+listaestados[dato][0]
                 auxiliar=listaestados[dato][0]
-    
     unir=graph1+graph2+graph3+"\n}"
     Grafico(unir,"lista")
 def graficarmatriz():

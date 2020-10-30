@@ -11,7 +11,7 @@ def winprin():
 
     #creando la ventana principal
     ventana = tk.Tk()
-    ventana.title("Proyecto #1 - LFP")
+    ventana.title("Proyecto #2 - LFP")
     #configuramos el tamaño de la ventana principal
     ventana.geometry('380x340')
 
@@ -45,10 +45,11 @@ def winprin():
                 lectura()
                 winprin()
             elif e.get() =="2":
+                from HTML import pageweb
                 ventana2.destroy()
                 ventana.destroy()
- 
-                            
+                pageweb()
+                winprin()            
             elif e.get()== "3":
                 ventana2.destroy()
                 ventana.destroy()

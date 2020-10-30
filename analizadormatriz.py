@@ -36,6 +36,8 @@ def analizadorMatriz(texto):
     fila=1
     columna=0
     estado=0
+    filamatriz= 0
+    columnamatriz=0
     cadena=texto+'λ'
     bandera=False
     while i< len(cadena) and bandera==False:
@@ -51,7 +53,8 @@ def analizadorMatriz(texto):
                 ms.showerror(title="error",message="EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
                 root.destroy()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
-                return errorcount
+                llamar2()  
+                graficarmatriz()
             else:
                 root=tk.Tk()
                 root.withdraw()                
@@ -60,7 +63,7 @@ def analizadorMatriz(texto):
                 llamar2()  
                 graficarmatriz()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores")
-                return errorcount
+                #return errorcount
         else:    
             switch(concatenada)
         #i+=1
