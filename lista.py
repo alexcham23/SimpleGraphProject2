@@ -49,11 +49,11 @@ def llamar2():
     tipolist= tipolista  
     tipo=2  
 def listaerror(fila,columna,caracter,descripcion):
-    global listaerror
+    global error
     lista=[str(fila),str(columna),str(caracter),str(descripcion)]
     error.append(lista)
 def listavalue(fila,columna,lexema,token):
-    global listavalue
+    global evalue
     lista2=[str(fila),str(columna),str(lexema),str(token)] 
     evalue.append(lista2) 
 def estados(encabezado,color):
@@ -71,31 +71,34 @@ def graficarlist():
     graph2=""	
     #datos de estados 
     for dato in range(len(listaestados)):
-      graph2+="\n\t"+str(listaestados[dato][0])+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[dato][1]))+"\",style=filled,label=\""+str(listaestados[dato][0])+"\"];"
-            
+     # graph2+="\n\t"+str(listaestados[dato][0])+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[dato][1]))+"\",style=filled,label=\""+str(listaestados[dato][0])+"\"];"
+        graph2+="\n\t"+str(dato)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[dato][1]))+"\",style=filled,label=\""+str(listaestados[dato][0])+"\"];"    
+    
     if tipolist.lower()=="verdadero":
         for dato in range(len(listaestados)):
             if dato==0:
-                auxiliar=listaestados[dato][0]
+                auxiliar=str(dato)
             else:
-                graph3+="\n\t"+auxiliar+"->"+listaestados[dato][0]
-                auxiliar=listaestados[dato][0]
+                graph3+="\n\t"+auxiliar+"->"+str(dato)
+                auxiliar=str(dato)
     
         for item in reversed(range(len(listaestados))):
             if item==len(listaestados)-1:
-               auxiliar=listaestados[item][0] 
+               auxiliar=str(item) 
             else:
-                graph3+="\n\t"+auxiliar+"->"+listaestados[item][0]
-                auxiliar=listaestados[item][0]
+                graph3+="\n\t"+auxiliar+"->"+str(item)
+                auxiliar=str(item)
     elif tipolist.lower()=="falso":
         for dato in range(len(listaestados)):
             if dato==0:
-                auxiliar=listaestados[dato][0]
+                #auxiliar=listaestados[dato][0]
+                auxiliar=str(dato)
             else:
-                graph3+="\n\t"+auxiliar+"->"+listaestados[dato][0]
-                auxiliar=listaestados[dato][0]
+                graph3+="\n\t"+auxiliar+"->"+str(dato)
+                auxiliar=str(dato)
     unir=graph1+graph2+graph3+"\n}"
     Grafico(unir,"lista")
+    
 def graficarmatriz():
     from colorstart import colorfill
     from figurasG import formG
@@ -108,8 +111,9 @@ def graficarmatriz():
     graph2=""    
     for i in range(len(matriz)):
         for j in range(len(matriz[0])):
-            if matriz[i][j]=="#":
-                graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];" 
+            if i==0 and j==0:
+                if matriz[i][j]=="#":
+                    graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];" 
             else:
                 bandera=False
                 x=0
@@ -121,6 +125,8 @@ def graficarmatriz():
                             graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(listaestados[x][0])+"\",group="+str(j)+"];"
                         elif listaestados[x][0]=="$" and listaestados[x][1]=="#":
                             graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];"                       
+                        elif listaestados[x][0]=="#" and listaestados[x][1]!="#":
+                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[x][1]))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];"                        
                         else:
                             graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[x][1]))+"\",style=filled,label=\""+str(listaestados[x][0])+"\",group="+str(j)+"];"
                         bandera=True

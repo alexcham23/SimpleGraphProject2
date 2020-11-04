@@ -147,13 +147,22 @@ def S0(concatenada):
         estado=0    
     elif cadena[i]=="/" and cadena[i+1]=="/":
         banderacomentario=False
-        while i and banderacomentario==False:
-            if cadena[i]=="\n":
-                fila+=1
-                estado=0
-                columna=0
-                banderacomentario=True
-            i+=1    
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=0
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=0
+                    columna=0
+                    banderacomentario=True
+                i+=1 
     elif banderamatriz== True:
         estado=2
     elif banderafila==True:
@@ -162,6 +171,12 @@ def S0(concatenada):
         estado=9
     elif banderadefecto==True:
         estado=10   
+    else:
+        errorcount+=1
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
+        columna+=1
+        i+=1
+        estado=0   
 def S1(concatenada):
     global i,fila,columna,errorcount,estado,auxiliar,banderamatriz,banderanodo,banderafila,banderadefecto
     if concatenada.islower() or concatenada.isupper():
@@ -173,21 +188,37 @@ def S1(concatenada):
         estado=0
         i+=1
         columna+=1
-        if auxiliar.lower()== "matriz":
+        if "matriz" in auxiliar.lower():
             banderamatriz=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            if auxiliar.lower()=="matriz":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="nodo":
+        elif "nodo" in auxiliar.lower():
             banderanodo= True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
+            if auxiliar.lower()=="nodo":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="fila":
+        elif "fila" in auxiliar.lower():
             banderafila=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar))#aqui graabamos la listatoken
+            if auxiliar.lower()=="fila":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="defecto":
+        elif "defecto" in auxiliar.lower():
             banderadefecto=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
+            if auxiliar.lower()=="defecto":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
         else:
             errorcount+=1
@@ -206,12 +237,31 @@ def S1(concatenada):
     elif " " in concatenada:
         i+=1
         columna+=1;
-        estado=1 
+        estado=1
+    elif cadena[i]=="/" and cadena[i+1]=="/":
+        banderacomentario=False
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=1
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=1
+                    columna=0
+                    banderacomentario=True
+                i+=1 
     else:
         errorcount+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
         columna+=1
-        estado+=1
+        estado=1
+        i+=1
 def S2(concatenada):
     global i, fila,columna, errorcount,auxiliar,banderallave,estado,banderamatriz,filamatriz,columnamatriz
     if "'" in concatenada:
@@ -252,6 +302,7 @@ def S2(concatenada):
         errorcount+=1
         listaerror(fila,columna,concatenada,"desconocido")#aqui graabamos la listatokenerror
         columna+=1
+        i+=1
         estado=2
 def S3(concatenada):
     global i, fila,columna, errorcount,auxiliar,estado,banderafila,filamatriz,columnamatriz
@@ -292,6 +343,7 @@ def S3(concatenada):
         errorcount+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
         estado=3
+        i+=1
         columna+=1
 def S4(concatenada):
     global fila,columna,i,errorcount,auxiliar,estado
@@ -337,6 +389,7 @@ def S5(concatenada):
     else:
         errorcount+=1
         estado=5
+        i+=1
         columna+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
 def S6(concatenada):
@@ -393,6 +446,7 @@ def S6(concatenada):
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
         i+=1
         columna+=1
+        i+=1
         estado=6 
 def S8(concatenada):
     global i, fila,columna, errorcount,auxiliar,estado
@@ -623,6 +677,24 @@ def S15(concatenada):
         i+=1
         columna+=1;
         estado=15 
+    elif cadena[i]=="/" and cadena[i+1]=="/":
+        banderacomentario=False
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=15
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=15
+                    columna=0
+                    banderacomentario=True
+                i+=1 
     else:
         errorcount+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror 
@@ -651,6 +723,24 @@ def S9(concatenada):
         i+=1
         columna+=1
         estado=19
+    elif cadena[i]=="/" and cadena[i+1]=="/":
+        banderacomentario=False
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=9
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=9
+                    columna=0
+                    banderacomentario=True
+                i+=1 
     elif "\n" in concatenada:
         i+=1
         fila+=1

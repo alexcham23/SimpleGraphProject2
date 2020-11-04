@@ -2,7 +2,11 @@ from tkinter import messagebox as ms
 import tkinter as tk
 from Token import tokens
 from lista import listavalue
-from lista import listaerror,estados,llamar,graficarlist
+from lista import listaerror
+from lista import estados
+from lista import llamar
+from lista import graficarlist
+from lista import limpiarlistas
 nombredefect=""
 colordefect=""
 tipolista=""
@@ -29,6 +33,7 @@ def analizador(texto):
     fila=1
     columna=0
     estado=0
+    limpiarlistas()
     cadena=texto+'λ'
     bandera=False
     while i< len(cadena) and bandera==False:
@@ -44,6 +49,8 @@ def analizador(texto):
                 ms.showerror(title="error",message="EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
                 root.destroy()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
+                llamar()  
+                graficarlist()
                 return errorcount
             else:
                 root=tk.Tk()
@@ -135,13 +142,23 @@ def S0(concatenada):
         estado=0    
     elif cadena[i]=="/" and cadena[i+1]=="/":
         banderacomentario=False
-        while i and banderacomentario==False:
-            if cadena[i]=="\n":
-                fila+=1
-                estado=0
-                columna=0
-                banderacomentario=True
-            i+=1    
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=0
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=0
+                    columna=0
+                    banderacomentario=True
+                i+=1
+               
     elif banderalista== True:
         estado=2
     elif banderanodo==True:
@@ -150,6 +167,12 @@ def S0(concatenada):
         estado=4
     elif banderadefecto==True:
         estado=16   
+    else:
+        errorcount+=1
+        listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
+        columna+=1
+        estado=0
+        i+=1
 def S1(concatenada):
     global i,fila,columna,errorcount,estado,auxiliar,banderalista,banderanodo,banderanodos,banderadefecto
     if concatenada.islower() or concatenada.isupper():
@@ -161,21 +184,37 @@ def S1(concatenada):
         estado=0
         i+=1
         columna+=1
-        if auxiliar.lower()== "lista":
+        if "lista" in auxiliar.lower():
             banderalista=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            if auxiliar.lower()=="lista":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="nodo":
+        elif "nodo" in auxiliar.lower() and "nodos" not in auxiliar.lower():
             banderanodo= True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
+            if auxiliar.lower()=="nodo":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="nodos":
+        elif "nodos" in auxiliar.lower():
             banderanodos=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar))#aqui graabamos la listatoken
+            if auxiliar.lower()=="nodos":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
-        elif auxiliar.lower()=="defecto":
+        elif "defecto" in auxiliar.lower():
             banderadefecto=True
-            listavalue(fila,columna,auxiliar,tokens(auxiliar)) #aqui graabamos la listatoken
+            if auxiliar.lower()=="defecto":
+                listavalue(fila,columna,auxiliar,tokens(auxiliar))
+            else:
+                listaerror(fila,columna,auxiliar,"palabra desconocida")#aqui graabamos la listatokenerror
+                errorcount+=1
             auxiliar=""
         else:
             errorcount+=1
@@ -195,11 +234,30 @@ def S1(concatenada):
         i+=1
         columna+=1;
         estado=1 
+    elif cadena[i]=="/" and cadena[i+1]=="/":
+        banderacomentario=False
+        if i==0:
+            while i <len(cadena) and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=1
+                    columna=0
+                    banderacomentario=True
+                i+=1
+        else:
+            while i and banderacomentario==False:
+                if cadena[i]=="\n":
+                    fila+=1
+                    estado=1
+                    columna=0
+                    banderacomentario=True
+                i+=1 
     else:
         errorcount+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror     
         columna+=1
-        estado+=1
+        estado=1
+        i+=1
 def S2(concatenada):
     global i, fila,columna, errorcount,auxiliar,banderallave,estado,banderalista
     if "'" in concatenada:
@@ -236,6 +294,7 @@ def S2(concatenada):
         listaerror(fila,columna,concatenada,"desconocido")#aqui graabamos la listatokenerror
         columna+=1
         estado=2
+        i+1
 def S3(concatenada):
     global i, fila,columna, errorcount,auxiliar,estado
     if "'" in concatenada:
@@ -271,6 +330,7 @@ def S3(concatenada):
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror
         estado=3
         columna+=1
+        i+=1
 def S4(concatenada):
     global i, fila,columna, errorcount,auxiliar,estado
     if concatenada.isdigit():
@@ -355,6 +415,7 @@ def S6(concatenada):
         estado=6 
     else:
         errorcount+=1
+        i+=1
         estado=6
         columna+=1
         listaerror(fila,columna,concatenada,"Desconocido")#aqui graabamos la listatokenerror    

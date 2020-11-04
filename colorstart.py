@@ -49,5 +49,5 @@ def colorfill(cols):
     elif cols.lower()=="verde3":
         color="#00441b"       
     elif cols.lower()=="blanco":
-        color="#ffffff"
+        color="#ffffff"     
     return color
