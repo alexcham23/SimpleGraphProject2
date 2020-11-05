@@ -10,7 +10,9 @@ def tokens(dato):
     elif dato.lower()=="#":
         tipo="Tk_Numeral" 
     elif dato.lower()=="encabezados":
-        tipo="Tk_encabezado"     
+        tipo="Tk_encabezado"
+    elif dato.lower()=="tabla":
+        tipo="Tk_tabla"     
     elif dato.isdigit():
         tipo="Tk_Numero"
     elif "," in dato:

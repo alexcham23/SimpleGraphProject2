@@ -34,7 +34,7 @@ def analizador(texto):
     columna=0
     estado=0
     limpiarlistas()
-    cadena=texto+'λ'
+    cadena=texto+'\nλ'
     bandera=False
     while i< len(cadena) and bandera==False:
         #columna+=1

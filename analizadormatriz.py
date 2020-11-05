@@ -45,7 +45,7 @@ def analizadorMatriz(texto):
     auxcolcount=0
     auxlista.clear()
     matriz.clear()
-    cadena=texto+'λ'
+    cadena=texto+'\nλ'
     bandera=False
     while i< len(cadena) and bandera==False:
         #columna+=1
@@ -1058,7 +1058,7 @@ def S21(concatenada):
         columna+=1 
         estado=21    
 def S22(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,colordefect
+    global i,fila,columna,errorcount,auxiliar,estado,colordefect,banderadefecto
     if concatenada.islower() or concatenada.isupper():
         auxiliar+=concatenada
         i+=1
@@ -1076,7 +1076,7 @@ def S22(concatenada):
         auxiliar=""
         columna+=1
         i+=1
-        banderanodo=False
+        banderadefecto=False
         estado=0 
         for x in range(len(matriz)):
             for y in range(len(matriz[0])):

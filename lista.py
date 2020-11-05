@@ -165,3 +165,31 @@ def graficarmatriz():
     
     unir=graph1+graph2+graph3+"\n}"
     Grafico(unir,"matriz")
+
+def graficartabla():
+    from colorstart import colorfill
+    from figurasG import formG
+    from analizadortabla import matriz,nombre
+    global namedefect,Colordefect,figuradefect,tipo
+    tipo=3    
+    graph1='digraph finite_state_machine {\n\tsize=\"8,5\"\n\tlabel="'+str(nombre)+'";\n\tlabelloc="c";\n\tlabelfontsize=200;\n\tnode [shape=plaintext]\n\tsome_node [\n\tlabel=<'
+    auxiliar=""
+    aux2=""
+    graph3=""
+    graph2=""  
+    graph2+='\n\t<table border="0" cellborder="1" cellspacing="0">'
+    numero=1
+    for i in range(len(matriz)):
+        graph2+='\n\t\t<tr>'
+        for  j in range(len(matriz[0])):
+            if j==0 and i==0:
+                graph2+='\n\t\t\t<td bgcolor="'+str(colorfill(matriz[i][j][1]))+'">#</td>\n\t\t\t<td bgcolor="'+str(colorfill(matriz[i][j][1]))+'">'+str(matriz[i][j][0])+'</td>'
+            elif j==0 and i!=0:
+                graph2+='\n\t\t\t<td bgcolor="'+str(colorfill(matriz[i][j][1]))+'">'+str(numero)+'</td>\n\t\t\t<td bgcolor="'+str(colorfill(matriz[i][j][1]))+'">'+str(matriz[i][j][0])+'</td>'
+                numero+=1
+            else:
+                graph2+='\n\t\t\t<td bgcolor="'+str(colorfill(matriz[i][j][1]))+'">'+str(matriz[i][j][0])+'</td>'
+        graph2+='\n\t\t</tr>'
+    graph2+='\n\t</table>>\n\t];\n}'
+    unir=graph1+graph2
+    Grafico(unir,"tabla")

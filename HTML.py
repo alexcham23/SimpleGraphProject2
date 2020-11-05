@@ -45,9 +45,16 @@ def pageweb():
             mensaje1="""<center>
             <div>
                 <h2>Grafica<generada</h2><br><br><br>
-                <img src="C:/Users/alexcham23/Desktop/projectGraphviz/matriz.gv.svg"/>
+                <img src="C:/Users/alexcham23/Desktop/projectGraphviz/tabla.gv.svg"/>
             </div>
             """
+        elif tipo==3:
+            mensaje1="""<center>
+            <div>
+                <h2>Grafica<generada</h2><br><br><br>
+                <img src="C:/Users/alexcham23/Desktop/projectGraphviz/tabla.gv.svg"/>
+            </div>
+            """        
         mensaje2="""<div>
         <h2>TABLA DE TOKENS</h2><br><br>
         <table id="t01">

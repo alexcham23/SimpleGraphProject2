@@ -2,6 +2,7 @@ from tkinter import filedialog
 import tkinter as tk
 from analizadolista import analizador
 from analizadormatriz import analizadorMatriz
+from analizadortabla import analizadorTabla
 #from numeroaleatorios import aleatorios
 
 def lectura():
@@ -20,8 +21,8 @@ def lectura():
         analizador(info)
     elif 'matriz' in info.lower():
         analizadorMatriz(info)
-    elif 'matriz' in info.lower():
-        analizadortabla(info)
+    elif 'tabla' in info.lower():
+        analizadorTabla(info)
     #contador=analizador(info)
     #return contador
     info=""
