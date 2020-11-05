@@ -20,6 +20,8 @@ def lectura():
         analizador(info)
     elif 'matriz' in info.lower():
         analizadorMatriz(info)
+    elif 'matriz' in info.lower():
+        analizadortabla(info)
     #contador=analizador(info)
     #return contador
     info=""
