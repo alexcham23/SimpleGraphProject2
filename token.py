@@ -3,6 +3,14 @@ def tokens(dato):
     global tipo
     if dato.lower()=="lista":
         tipo="Tk_lista"
+    elif dato.lower()=="matriz":
+        tipo="Tk_matriz"
+    elif dato.lower()=="fila":
+        tipo="Tk_fila"   
+    elif dato.lower()=="#":
+        tipo="Tk_Numeral" 
+    elif dato.lower()=="encabezados":
+        tipo="Tk_encabezado"     
     elif dato.isdigit():
         tipo="Tk_Numero"
     elif "," in dato:

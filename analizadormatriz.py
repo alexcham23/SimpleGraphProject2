@@ -2,7 +2,8 @@ from tkinter import messagebox as ms
 import tkinter as tk
 from Token import tokens
 from lista import listavalue
-from lista import listaerror,estados,llamar2,graficarmatriz
+from lista import listaerror,estados,llamar2,graficarmatriz,limpiarlistas
+numero=1
 matriz=[]
 auxlista=[]
 auxfilacount=0
@@ -30,14 +31,20 @@ banderadefecto=False
 banderafila=False
 banderallave=False
 def analizadorMatriz(texto):
-    global fila,i,cadena,errorcount,fila,columna,estado
+    global fila,i,cadena,errorcount,fila,columna,estado,matriz,filamatriz,columnamatriz,auxfilacount,auxcolcount
     errorcount=0
     i=0
     fila=1
     columna=0
     estado=0
+    errorcount=0
     filamatriz= 0
     columnamatriz=0
+    limpiarlistas()
+    auxfilacount=0
+    auxcolcount=0
+    auxlista.clear()
+    matriz.clear()
     cadena=texto+'λ'
     bandera=False
     while i< len(cadena) and bandera==False:
@@ -509,8 +516,7 @@ def S12(concatenada):
         listavalue(fila,columna,auxiliar,tokens(auxiliar[0]))#guardamos en listatoken
         listavalue(fila,columna,concatenada,tokens(concatenada))
         auxiliar=auxiliar.replace("'","")
-        auxlista.append(auxiliar)
-        matriz[auxfilacount][auxcolcount]=auxiliar
+        auxlista.append([auxfilacount,auxcolcount,auxiliar])
         auxcolcount+=1
         #auxinodo=auxiliar
         auxiliar=""
@@ -522,8 +528,8 @@ def S12(concatenada):
         listavalue(fila,columna,auxiliar,tokens(auxiliar[0]))#guardamos en listatoken
         listavalue(fila,columna,concatenada,tokens(concatenada))
         auxiliar=auxiliar.replace("'","")
-        auxlista.append(auxiliar)
-        matriz[auxfilacount][auxcolcount]=auxiliar
+        auxlista.append([auxfilacount,auxcolcount,auxiliar])
+        #matriz[auxfilacount][auxcolcount]=auxiliar
         auxcolcount+=1
         #auxinodo=auxiliar
         auxiliar=""
@@ -562,8 +568,9 @@ def S13(concatenada):
     elif ";" in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        for li in auxlista:
-            estados(li,auxiliar)
+        for li in range(len(auxlista)):
+            matriz[auxlista[li][0]][auxlista[li][1]]=[auxlista[li][2],auxiliar]
+            #estados(li,auxiliar)
         auxlista.clear()
         auxfilacount+=1
         auxcolcount=0
@@ -592,12 +599,13 @@ def S13(concatenada):
         columna+=1
         estado=13
 def S14(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderafila,auxinodo,auxcolcount,auxfilacount,auxlista
+    global i,fila,columna,errorcount,auxiliar,estado,banderafila,auxinodo,auxcolcount,auxfilacount,auxlista,matriz
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        for li in auxlista:
-            estados(li,auxiliar)
+        for li in range(len(auxlista)):
+            matriz[auxlista[li][0]][auxlista[li][1]]=[auxlista[li][2],auxiliar]
+            #estados(li,auxiliar)
         auxlista.clear()
         auxfilacount+=1
         auxcolcount=0
@@ -631,9 +639,7 @@ def S15(concatenada):
         auxinodo=auxiliar
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        auxiliar="$"
-        auxlista.append(auxiliar)
-        matriz[auxfilacount][auxcolcount]=auxiliar
+        auxlista.append([auxfilacount,auxcolcount,auxiliar])
         auxcolcount+=1        
         auxiliar=""
         columna+=1
@@ -643,9 +649,7 @@ def S15(concatenada):
         auxinodo=auxiliar
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        auxiliar="$"
-        auxlista.append(auxiliar)
-        matriz[auxfilacount][auxcolcount]=auxiliar
+        auxlista.append([auxfilacount,auxcolcount,auxiliar])
         auxcolcount+=1           
         auxiliar=""
         columna+=1
@@ -654,8 +658,9 @@ def S15(concatenada):
     elif ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        for li in auxlista:
-            estados(li,auxiliar)
+        for li in range(len(auxlista)):
+            matriz[auxlista[li][0]][auxlista[li][1]]=[auxlista[li][2],auxiliar]
+            #estados(li,auxiliar)
         auxlista.clear()
         auxfilacount+=1
         auxcolcount=0
@@ -774,7 +779,8 @@ def S7(concatenada):
     elif ";" in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        estados(auxinodo,auxiliar)
+        matriz[int(filamatriz)-1][int(columnamatriz)-1]=[auxinodo,auxiliar] 
+        #estados(auxinodo,auxiliar)# aqui debo de aregralar esto
         auxinodo=""
         auxfilacount+=1
         auxcolcount=0
@@ -803,11 +809,11 @@ def S7(concatenada):
         columna+=1
         estado=7        
 def S24(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderanodo,auxinodo,auxcolcount,auxfilacount
+    global i,fila,columna,errorcount,auxiliar,estado,banderanodo,auxinodo,auxcolcount,auxfilacount,numero,filamatriz,columnamatriz
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        estados(auxinodo,auxiliar)
+        matriz[int(filamatriz)-1][int(columnamatriz)-1]=[auxinodo,auxiliar]    
         auxinodo=""
         auxcolcount=0
         auxfilacount+=1
@@ -930,7 +936,7 @@ def S19(concatenada):
         auxinodo=auxiliar
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        matriz[int(filamatriz)-1][int(columnamatriz)-1]=auxiliar
+        auxinodo=auxiliar
         auxiliar=""
         columna+=1
         i+=1
@@ -946,7 +952,8 @@ def S19(concatenada):
     elif ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
-        estados(auxinodo,auxiliar)
+        matriz[int(filamatriz)-1][int(columnamatriz)-1]=[auxinodo,auxiliar] 
+        #estados(auxinodo,auxiliar)
         auxinodo=""
         auxiliar=""
         columna+=1
@@ -1070,7 +1077,20 @@ def S22(concatenada):
         columna+=1
         i+=1
         banderanodo=False
-        estado=0   
+        estado=0 
+        for x in range(len(matriz)):
+            for y in range(len(matriz[0])):
+                if len(matriz[x][y])>1:
+                    if matriz[x][y][0]=="#"and matriz[x][y][1]!="#":
+                        matriz[x][y][0]=nombredefect
+                    elif matriz[x][y][0]!="#"and matriz[x][y][1]=="#":
+                        matriz[x][y][1]=colordefect
+                    elif matriz[x][y][0]=="#"and matriz[x][y][1]=="#":  
+                        matriz[x][y][0]=nombredefect
+                        matriz[x][y][1]=colordefect
+                        #print(len(matriz[x][y]))
+                elif len(matriz[x][y])==1:
+                    matriz[x][y]=[nombredefect,colordefect]  
     elif "\n" in concatenada:
         i+=1
         fila+=1
@@ -1091,7 +1111,7 @@ def S22(concatenada):
         columna+=1
         estado=22
 def S23(concatenada):
-    global i,fila,columna,errorcount,auxiliar,estado,banderadefecto,colordefect
+    global i,fila,columna,errorcount,auxiliar,estado,banderadefecto,colordefect,matriz,nombredefect
     if ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
@@ -1101,6 +1121,20 @@ def S23(concatenada):
         i+=1
         banderadefecto=False
         estado=0
+        for x in range(len(matriz)):
+            for y in range(len(matriz[0])):
+                if len(matriz[x][y])>1:
+                    if matriz[x][y][0]=="#"and matriz[x][y][1]!="#":
+                        matriz[x][y][0]=nombredefect
+                    elif matriz[x][y][0]!="#"and matriz[x][y][1]=="#":
+                        matriz[x][y][1]=colordefect
+                    elif matriz[x][y][0]=="#"and matriz[x][y][1]=="#":  
+                        matriz[x][y][0]=nombredefect
+                        matriz[x][y][1]=colordefect
+                        #print(len(matriz[x][y]))
+                elif len(matriz[x][y])==1:
+                    matriz[x][y]=[nombredefect,colordefect]
+                    
     elif "\n" in concatenada:
         i+=1
         fila+=1

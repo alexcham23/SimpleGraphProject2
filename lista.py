@@ -111,26 +111,8 @@ def graficarmatriz():
     graph2=""    
     for i in range(len(matriz)):
         for j in range(len(matriz[0])):
-            if i==0 and j==0:
-                if matriz[i][j]=="#":
-                    graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];" 
-            else:
-                bandera=False
-                x=0
-                while x < len(listaestados) and bandera==False :
-                    if matriz[i][j] == listaestados[x][0]:
-                        if listaestados[x][0]=="$":
-                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[x][1]))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];"
-                        elif listaestados[x][1]=="#":
-                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(listaestados[x][0])+"\",group="+str(j)+"];"
-                        elif listaestados[x][0]=="$" and listaestados[x][1]=="#":
-                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(Colordefect))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];"                       
-                        elif listaestados[x][0]=="#" and listaestados[x][1]!="#":
-                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[x][1]))+"\",style=filled,label=\""+str(namedefect)+"\",group="+str(j)+"];"                        
-                        else:
-                            graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(listaestados[x][1]))+"\",style=filled,label=\""+str(listaestados[x][0])+"\",group="+str(j)+"];"
-                        bandera=True
-                    x+=1
+             graph2+="\n\t"+str(i)+str(j)+" [shape="+formG(figuradefect)+",fillcolor=\""+str(colorfill(matriz[i][j][1]))+"\",style=filled,label=\""+str(matriz[i][j][0])+"\",group="+str(j)+"];" 
+
     if tipolist.lower()=="verdadero":
         for i in range(len(matriz)):
             for j in range(len(matriz[0])):
