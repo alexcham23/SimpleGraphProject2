@@ -1112,7 +1112,12 @@ def S22(concatenada):
         estado=22
 def S23(concatenada):
     global i,fila,columna,errorcount,auxiliar,estado,banderadefecto,colordefect,matriz,nombredefect
-    if ";"  in concatenada:
+    if concatenada.isdigit():
+        auxiliar+=concatenada
+        i+=1
+        estado=23
+        columna+=1   
+    elif ";"  in concatenada:
         listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         colordefect=auxiliar;
