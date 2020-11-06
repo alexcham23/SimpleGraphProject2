@@ -25,7 +25,7 @@ def Grafico(graphi,name):
         d=Source(graphi)
         #d.source(grafo)
         #d.format='png'
-        d.render(''+name+'.gv', ruta,format='png',view=False) 
+        d.render(''+name+'.gv', ruta,format='png',view=True) 
         d.render(''+name+'.gv',ruta,format='svg',view=False)
         #render('dot', 'png',name+'.gv') 
     else:
@@ -34,7 +34,7 @@ def Grafico(graphi,name):
       #d.source(grafo)
       #d.format='png'
       #d.format='pdf'
-      d.render(''+name+'.gv',ruta,format='png',view=False)
+      d.render(''+name+'.gv',ruta,format='png',view=True)
       d.render(''+name+'.gv',ruta,format='svg',view=False)
       
       

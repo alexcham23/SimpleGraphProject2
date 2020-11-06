@@ -1070,7 +1070,11 @@ def S22(concatenada):
         estado=23
         columna+=1       
     elif ";" in concatenada:
-        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        if tokens(auxiliar).lower()!="desconocido":
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        else:
+            listaerror(fila,columna,auxiliar,"Desconocido")#aqui graabamos la listatokenerror
+            errorcount+=1   
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         colordefect=auxiliar
         auxiliar=""
@@ -1118,7 +1122,11 @@ def S23(concatenada):
         estado=23
         columna+=1   
     elif ";"  in concatenada:
-        listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        if tokens(auxiliar).lower()!="desconocido":
+            listavalue(fila,columna,auxiliar,tokens(auxiliar))#guardamos en listatoken auxiliar
+        else:
+            listaerror(fila,columna,auxiliar,"Desconocido")#aqui graabamos la listatokenerror
+            errorcount+=1   
         listavalue(fila,columna,concatenada,tokens(concatenada))#guardamos en listatoken signo
         colordefect=auxiliar;
         auxiliar=""

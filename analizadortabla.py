@@ -62,14 +62,14 @@ def analizadorTabla(texto):
                 ms.showerror(title="error",message="EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
                 root.destroy()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores encontrados")
-                llamar2()  
+                #llamar2()  
                 graficartabla()
             else:
                 root=tk.Tk()
                 root.withdraw()                
                 ms.showerror(title="error",message="EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores")
                 root.destroy()  
-                llamar2()  
+                #llamar2()  
                 graficartabla()
                 print("EL analizador a terminado de leer el Archivo con "+str(errorcount)+" errores")
                 #return errorcount
